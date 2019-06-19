@@ -1,0 +1,2 @@
+// lorem ipsum tekst da go procita cel kolku kolku karakteri zborovi ima kolku recenici i kolku prazni mesta.
+//sledno kolku zborovi imaat pomalku od 7karakteri,kolku imaat ednakvo i kolku imaat povekje od 7.

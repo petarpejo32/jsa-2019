@@ -31,6 +31,7 @@ function func(niza){
         else if(niza[j].prosek==najmal){
             console.log("Najmal prosek ima: "+ niza[j].ime+" "+ niza[j].prezime);
         }
+        
 
     }
 }
