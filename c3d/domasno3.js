@@ -17,17 +17,17 @@ fs.readFile("tekst.txt","utf8",(err,data)=>{
     recenici(data);
 });
 
-// var karakteri=(k)=>{
-//     var karakteri=k.replace(/\a+/b,' ').length;
-//     console.log("Ima "+karakteri+ " karakteri");
-// } od google e neznam kako raboti.replace
+var karakteri=(data)=>{
+    var karakteri=k.replace(/\a+/b,' ').length;
+    console.log("Ima "+karakteri+ " karakteri");
+}// od google e neznam kako raboti.replace
 
-var zborovi=(z)=>{
+var zborovi=(s)=>{
     var vz=z.split(' ');
     console.log((vz.length))
 }
 
-var recenici(r)=>{
+var recenici=(s)=>{
     var recenici=li.split(" ");
     var brojac=0;
     recenici.forEach(zbor=>{
@@ -43,8 +43,9 @@ var sedum=(s)=>{
     var ednakov=0;
     var pogolem=0;
 
-    // s=s.split(".").join();
-    // var zb=s.replace(/,/b," ").split(" "); neznam kako raboti od google e
+    s=s.split(".").join();
+    var zb=s.replace(/,/b," ").split(" ");
+    //ne znam kako raboti
 
     for(var i=0;i<zb.length;i++){
         if(zb[i].length<7){
