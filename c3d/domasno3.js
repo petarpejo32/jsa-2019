@@ -18,7 +18,7 @@ fs.readFile("tekst.txt","utf8",(err,data)=>{
 });
 
 var karakteri=(data)=>{
-    var karakteri=k.replace(/\a+/b,' ').length;
+    var karakteri=k.replace(/\a+/g,' ').length;
     console.log("Ima "+karakteri+ " karakteri");
 }// od google e neznam kako raboti.replace
 
@@ -44,7 +44,7 @@ var sedum=(s)=>{
     var pogolem=0;
 
     s=s.split(".").join();
-    var zb=s.replace(/,/b," ").split(" ");
+    var zb=s.replace(/,/g," ").split(" ");
     //ne znam kako raboti
 
     for(var i=0;i<zb.length;i++){
