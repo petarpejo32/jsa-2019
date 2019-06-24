@@ -17,17 +17,17 @@ fs.readFile("tekst.txt","utf8",(err,data)=>{
     recenici(data);
 });
 
-var karakteri=(data)=>{
-    var karakteri=k.replace(/\a+/g,' ').length;
+var karakteri=(st)=>{
+    var karakteri=k.replace(/\s+/g,' ').length;
     console.log("Ima "+karakteri+ " karakteri");
 }// od google e neznam kako raboti.replace
 
-var zborovi=(s)=>{
+var zborovi=(data)=>{
     var vz=z.split(' ');
     console.log((vz.length))
 }
 
-var recenici=(s)=>{
+var recenici=(st)=>{
     var recenici=li.split(" ");
     var brojac=0;
     recenici.forEach(zbor=>{
@@ -38,7 +38,7 @@ var recenici=(s)=>{
     console.log("Ima "+brojac+" recenici" );
 }
 
-var sedum=(s)=>{
+var sedum=(st)=>{
     var pomal=0;
     var ednakov=0;
     var pogolem=0;
