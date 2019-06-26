@@ -2,10 +2,10 @@ var http=require('http');
 
 var server=http.createServer(function(req,res){
     console.log(req);
-    var URL=req.url.split('/');
+    var URL=req.url.split('/','+','-','*');
     var output=0;
-    for(var i = 0; i<URL.length;i++){
-        if(i%2!=0){
+    for(var i = 1; i<URL.length;i++){
+        if(i%2==0){
             if(URL[i]=="+"){
                 output=parseInt(URL[i-1])+parseInt(URL[i+1]);
             }
