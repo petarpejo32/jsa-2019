@@ -1,68 +1,133 @@
-var http=require('http');
+var http = require('http');
 
-var getAllStudents=()=>{console.log("getallstudents")};
-var getStudent=()=>{console.log("getstudent")};
-var storeStudent=()=>{console.log("storestudent")};
-var deleteStudent=()=>{console.log("deletestudent")};
-var updateStudent=()=>{console.log("updatedstudent")};
-var patchStudent=()=>{console.log("patchstudent")};
+var getAllStudents = (req,res) => { 
+    console.log('get all students');
+};
+var getStudent = (req,res) => { 
+    console.log('get student with id',req.params.name); 
+    res.write('get student with id'+ req.params.name); 
+};
+var storeStudent = (req,res) => { 
+    console.log('store student'); 
+};
+var deleteStudent = (req,res) => { 
+    console.log('delete student'); 
+};
+var updateStudent = (req,res) => { 
+    console.log('update student',req.params.id); 
+    res.write('update student'+ req.params.id); 
+};
+var patchStudent = (req,res) => { 
+    console.log('patch student'); 
+};
+
 var routes = {
-    get:[
-        {route:'/students',func: getAllStudents},
-        {route:'/students/:id',func: getStudent},
-        {route:'/students/:name',func: getStudent}
+    get: [
+        { route: '/students', func: getAllStudents },
+        { route: '/students/:name', func: getStudent }
     ],
-    post:[
-        {route:'/students',func:storeStudent}
+    post: [
+        { route: '/students', func: storeStudent }
     ],
-    put:[
-        {route:'/students/:id',func:updateStudent}
+    put: [
+        { route: '/students/:id', func: updateStudent }
     ],
-    patch:[
-        {route:'/students',func:patchStudent}
+    patch: [
+        { route: '/students/:id', func: patchStudent }
     ],
-    delete:[
-        {route:'/students',func:deleteStudent}
-    ],
-    
+    delete: [
+        { route: '/students/:id', func: deleteStudent }
+    ]
 };
 
 
 
 
-var regmatch=  true;
-var index=undefined;
-var server=http.createServer((req,res)=>{
-    var regmatch=  true;
-    for(let i=0;i < routes[req.method.toLowerCase()].length;i++){
-        console.log(routes[req.method.toLowerCase()][i].route)
-        regmatch=true;
-        if(route==req.url){
-            index=i;
-            regmatch=false;
+// req.method = "get";
+// req.url = "/students/23";
+
+// if (routes[req.method][0].route == req.url) {
+//     routes[req.method][0].func();
+// }
+
+
+// '/students/:id'
+// '\/students\/:id'
+// '\/students\/:id'
+// '\/students\/([a-zA-Z0-9\-_]*)'
+
+// var id = "23";
+
+
+
+var server = http.createServer((req, res) => {
+    // if (routes[req.method][0].route == req.url) {
+    //     routes[req.method][0].func();
+    // }
+    var regmatch = true;
+    var index = undefined;
+    var varname=null;
+    var varvalue=null;
+
+    for(let i = 0; i < routes[req.method.toLowerCase()].length; i++){
+        var route = routes[req.method.toLowerCase()][i].route;
+        if(route === req.url){
+            index = i;
+            regmatch = false;
             break;
         }
     }
+
     if(regmatch){
-        for(let i=0;i < routes[req.method.toLowerCase()].length;i++){
-            var route=routes[req.method.toLowerCase()][i].route;
-            route=route.split('/').join('\/');
-            var regroute=route.replace(/(:[a-zA-z.]*),'([a-zA-z0-9\-]*)'/)
-            var re=new RegExp('$'+regroute+'$');
-            if(re.test(req.url)){
-                index=i;
+        for(let i = 0; i < routes[req.method.toLowerCase()].length; i++){
+            var route = routes[req.method.toLowerCase()][i].route; // /students/:id
+            route = route.split('/').join('\\/');
+            var regroute = route.replace(/(:[a-zA-Z_]*)/, '([a-zA-Z0-9\\-_]+)'); // /students/([a-zA-Z0-9\-_]*)
+            var re = new RegExp('^' + regroute + '$');
+            if(re.test(req.url)){ // req.url == /students/([a-zA-Z0-9\-_]*)
+                console.log(regroute,  ' == ', req.url);
+                varname = routes[req.method.toLowerCase()][i].route.match(/\/:([a-zA-Z_]+)/)[1];
+                varvalue = req.url.match(regroute)[1];
+                index = i;
                 break;
             }
         }
     }
-    if(index !==undefined ){
-        routes[req.method.toLowerCase()][index].func();
+
+    if(index !== undefined){
+        req.params={};
+        req.params[varname]=varvalue;
+        routes[req.method.toLowerCase()][index].func(req,res)
     }
+
     res.end();
 });
-server.listen(8293,(err)=>{
+
+server.listen(8080, (err) => {
     if(err){
-        console.log(err);
+        console.error(err);
+        return;
     }
-    console.log("Success!");
+    console.log('Server started successfully');
 });
+
+
+
+// '/students/:id' -> '/students/graduated'
+// :id -> [a-zA-Z0-9]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// '/students/graduated'
