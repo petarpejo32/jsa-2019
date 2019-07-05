@@ -83,6 +83,13 @@ var UpdateFood = (req,res)=>{
     });
 }
 var PartialUpdateFood = (req,res)=>{
+    var check = (req.body.name !=undefined && req.body.name !="" && req.body.name.length > 0)
+    || req.body.price !=undefined
+    || req.body.calories !=undefined;
+
+    if(!check && req.body.id != undefined){
+        return res.status(400).send("Bad request!");
+    }
     fs.readFile('./food_list.json','utf8',(err,data)=>{
         if(err){
             res.send('Could not read file');
