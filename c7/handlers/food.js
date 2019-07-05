@@ -88,13 +88,40 @@ var PartialUpdateFood = (req,res)=>{
             res.send('Could not read file');
             return;
         }
-        jData=JSON.parse(data);
-        res.send(jData);
+        var jData=JSON.parse(data);
+        var index=null;
+        for(let i=0;i<jData.length;i++){
+            if(jData[i].id==req.params.id){
+                index=i;
+                break;
+            }
+        }
+        // if(req.body.name!=undefined && req.body.name !=""){
+        //     jData[index].name=req.body.name;
+        // }
+        // if(req.body.price!=undefined && req.body.price !=""){
+        //     jData[index].price=req.body.price;
+        // }
+        // if(req.body.calories!=undefined && req.body.calories !=""){
+        //     jData[index].calories=req.body.calories;
+        // }
+
+        for(var i in jData[index]){
+            if(req.body[i] != undefined && req.body[i] != ""){
+                jData[index][i] = req.body[i];
+            }
+        }
+        fs.writeFile('/food_list.json', JSON.stringify(jData), (err)=>{
+            if(err){
+                return res.status(500).send("Could not read File");
+            }
+            return res.status(200).send('Ok');
+        });
     });
 }
 var DeleteFood = (req,res)=>{
     fs.readFile('./food_list.json','utf8',(err,data)=>{
-        if(err){
+        if(err){calories
             res.send('Could not read file');
             return;
         }
