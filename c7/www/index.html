@@ -7,9 +7,8 @@
     <title>Document</title>        
     </head>
 <body>
-    <h1>Hi</h1>
     <button id="get-food-btn">Get Food</button>
-    <table border="1" width="50%"">
+    <table border="1" width="75%" id="tab">
         <thead>
             <tr>
                 <th>id</th>
@@ -18,10 +17,104 @@
                 <th>calories</th>
             </tr>
         </thead>
-        <tbody class="data">
+        <tbody id="data">
 
         </tbody>
     </table>
+
+    <br>
+    <label for="id">id</label>
+        <input type="text" id="id">
+   
+    <label for="name">name</label>
+        <input type="text" id="name">
+   
+    <label for="price">price</label>
+        <input type="text" id="price">
+   
+    <label for="calories">calories</label>
+        <input type="text" id="calories">
+    <br>
+
+    <script>
+        function tabela(){
+            document. getElementById("tab");
+            var tbody=document.getElementById('data');
+            tbody.innerText="";
+            fetch('http://127.0.0.1:8080/food')
+            .then(response=>{
+                response.json().then(json=>{
+                    var json1=json;
+                    var tab = document.getElementById('data');
+                    for(var i = 0; i<json1.length;i++){
+                        var tr = document.createElement('tr');
+                        for(var j = 0; j<json1[i];j++){
+                            var td = document.createElement('td');
+                            td.innerText=json[i][j];
+                            tr.appendChild(td);
+                        }
+                        data.appendChild(tr);
+                    };
+                });
+            });
+        };
+
+        var addbtn = document.getElementById("add-btn");
+        addbtn.addEventListener('click', (e) =>{
+        var prazna={
+            id: null,
+            name:"",
+            price:null,
+            calories:null
+        }
+
+        var iId = document.getElementById('id').value;
+        var iName = document.getElementById('name').value;
+        var iprice = document.getElementById('price').value;
+        var icalories = document.getElementById('calories').value;
+
+        prazna.id = parseInt(iId);
+        prazna.name = (iId);
+        prazna.price = parseInt(iprice);
+        prazna.calories = parseInt(icalories);
+
+        fetch('http://127.0.0.1:8080/food', {
+            method:'post',
+            headers: {
+                    'Accept': 'application/json, text/plain, */*',
+                    'Content-Type': 'application/json'
+                }, 
+                body: JSON.stringify(prazna)
+               
+        });
+        tabela();
+    });
+
+
+        var get_btn=document.querySelector('#get-food-btn');
+        get_btn.addEventListener('click', (e) => {
+            tabela();
+        });
+        
+        
+
+    </script>
+
+    
+   
+
+
+
+
+
+
+
+
+
+
+
+
+
     <script>
         var dataContainer = document.querySelector('.data')
         var getFoodBtn=document.querySelector('#get-food-btn');
