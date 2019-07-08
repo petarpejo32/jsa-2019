@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!-- <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -81,7 +81,6 @@
         fetch('http://127.0.0.1:8080/food', {
             method:'post',
             headers: {
-                    'Accept': 'application/json, text/plain, */*',
                     'Content-Type': 'application/json'
                 }, 
                 body: JSON.stringify(prazna)
@@ -171,5 +170,163 @@
         });
     </script>
     
+</body>
+</html> -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <h1>Hello World!</h1>
+    <button id="get-food-btn">Get Food</button>
+
+    <hr/>
+    
+    <input type="text" id="name" placeholder="name">
+    <input type="number" id="price" placeholder="price">
+    <input type="number" id="calories" placeholder="calories">
+
+    <hr>
+
+    <table border="1" width="50%">
+        <thead>
+            <tr>
+                <th>id</th>
+                <th>name</th>
+                <th>price</th>
+                <th>calories</th>
+                <th>delete</th>
+            </tr>
+        </thead>
+        <tbody class="data">
+
+        </tbody>
+    </table>
+    <script>
+        var dataContainer = document.querySelector('.data');
+        var getFoodBtn = document.querySelector('#get-food-btn');
+        var addFoodBtn = document.querySelector('#add-food-btn');
+        getFoodBtn.addEventListener('click', (e) => {
+            fetch('http://127.0.0.1:8080/food')
+            .then(res => res.json())
+            .then(data => {
+                // console.log(data);
+                for(let i = 0; i < data.length; i++){
+                    var tr = document.createElement('tr');
+                    var td1 = document.createElement('td');
+                    td1.innerText = data[i].id;
+                    tr.append(td1);
+                    var td2 = document.createElement('td');
+                    td2.innerText = data[i].name;
+                    tr.append(td2);
+                    var td3 = document.createElement('td');
+                    td3.innerText = data[i].price;
+                    tr.append(td3);
+                    var td4 = document.createElement('td');
+                    td4.innerText = data[i].calories;
+                    tr.append(td4);
+                    var td5 = document.createElement('td');
+                    // td5.innerText = data[i].id;
+                    var delBtn = document.createElement('button');
+                    delBtn.innerText = 'Delete';
+                    delBtn.addEventListener('click', function(e) {
+                        var parent = this.parentNode.parentNode
+                        // alert(`Delete ${data[i].id}`);
+                        fetch(
+                            `http://127.0.0.1:8080/food/${data[i].id}`,
+                            {method: 'delete'}
+                        )
+                        .then(res => res.text())
+                        .then(data => {
+                            parent.remove();
+                            console.log('deleted');
+                        });
+                    });
+                    td5.append(delBtn);
+                    tr.append(td5);
+                    dataContainer.appendChild(tr);
+                }
+            });
+
+            addFoodBtn.addEventListener("click",function(){
+                var nameField=document.querySelector('#name');
+                var priceField=document.querySelector('#price');
+                var caloriesField=document.querySelector('#calories');
+
+                var validate=nameField.value.trim()!="" && nameField.value!=undefined
+                && priceField.value.trim()!="" && priceField.value!=undefined
+                && caloriesField.value.trim()!="" && caloriesField.value!=undefined;
+
+                if(validate){
+                    var data={
+                        id:Number(document.querySelector('.data tr:last-of-type td').innerHTML)+1,
+                        name:nameField.value.trim(),
+                        price:priceField.value.trim(),
+                        calories:caloriesField.value.trim()
+                    };
+                    fetch("http://127.0.1:8080/food",
+                       { method:'post ',
+                        headers:{
+                            'Content-type':'application/json'
+                        }
+                        body:{'JSON.stringify(data)'}
+                       }
+
+                    )
+                    .then(res=>res.json())
+                    .then( output=>{
+                        for(let i = 0; i < data.length; i++){
+                    var tr = document.createElement('tr');
+                    var td1 = document.createElement('td');
+                    td1.innerText = output[i].id;
+                    tr.append(td1);
+                    var td2 = document.createElement('td');
+                    td2.innerText = output[i].name;
+                    tr.append(td2);
+                    var td3 = document.createElement('td');
+                    td3.innerText = output[i].price;
+                    tr.append(td3);
+                    var td4 = document.createElement('td');
+                    td4.innerText = output[i].calories;
+                    tr.append(td4);
+                    var td5 = document.createElement('td');
+                    // td5.innerText = data[i].id;
+                    var delBtn = document.createElement('button');
+                    delBtn.innerText = 'Delete';
+                    delBtn.addEventListener('click', function(e) {
+                        var parent = this.parentNode.parentNode
+                        // alert(`Delete ${data[i].id}`);
+                        fetch(
+                            `http://127.0.0.1:8080/food/${data[i].id}`,
+                            {method: 'delete'}
+                        )
+                        .then(res => res.text())
+                        .then(data => {
+                            parent.remove();
+
+                        });
+                    });
+                    td5.append(delBtn);
+                    tr.append(td5);
+                    dataContainer.appendChild(tr);
+                }
+            });
+                    })
+                    .catch(err=>{
+                        console.log(err);
+                    });
+
+                }
+                else{
+                    alert('nah');
+                }
+            });
+        }
+    </script>
 </body>
 </html>
