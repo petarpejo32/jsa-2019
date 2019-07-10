@@ -1,20 +1,16 @@
+var modelFood = require('../models/food');
 
-var fs = require('fs');
-
-var GetStudents = (req, res) => {
-    fs.readFile("./students_list.json", "utf8", (err, data) => {
-        if(err){
-            throw err;
-        }
-        else {
-            var jData = JSON.parse(data);
-            var newData = {};
-            newData.studenti = jData;
-            
-            res.render("students", newData);
-        };
-    });
+var Food = (req, res) => {
+    modelFood.GetAll()
+    .then(data => {
+        return res.render('food', {f: data});
+    })
+    .catch(err =>{
+        return res.send('Error');
+    })
+   
 }
-    module.exports = {
-        GetStudents
-    };
+
+module.exports = {
+    Food
+}

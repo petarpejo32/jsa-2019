@@ -2,16 +2,23 @@ var fs = require('fs');
 
 
 var GetAllFood = (req, res) => {
-    fs.readFile('./food_list.json', 'utf8', (err, data) => {
-        if(err){
-            res.send('Could not read file');
-            return;
-        }
-        jData = JSON.parse(data);
-        res.send(jData);
-    });
+    modelFood.GetAll()
+    .then(data => {
+        return res.send(data);
+    })
+    .catch(err =>{
+        return res.send('Error');
+    })
 };
 var GetSingleFood = (req,res)=>{
+    modelFood.GetSingle(req.params.id)
+    .then(data =>{
+        return res.send(data);
+    })
+    .catch(err =>{
+        return res.send("Error");
+    })
+
     fs.readFile('./food_list.json','utf8',(err,data)=>{
         if(err){
             res.send('Could not read file');
@@ -156,5 +163,7 @@ module.exports = {
     CreateNewFood,
     UpdateFood,
     PartialUpdateFood,
-    DeleteFood
+    DeleteFood,
+    GetAll,
+    GetSingle
 };
