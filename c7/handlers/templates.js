@@ -1,16 +1,20 @@
-var First=(req,res)=>{
-    var data={
-            ime:'Pero',
-            prezime:'Perovski'
-            studenti:[
-                {ime:'Ivan',prezime:'Ivanovski'},
-                {ime:'Jovan',prezime:'Jovanovski'}
-            ]     
-            };
-    res.render('first',data);
-}
 
+var fs = require('fs');
 
-module.exports={
-    First
+var GetStudents = (req, res) => {
+    fs.readFile("./students_list.json", "utf8", (err, data) => {
+        if(err){
+            throw err;
+        }
+        else {
+            var jData = JSON.parse(data);
+            var newData = {};
+            newData.studenti = jData;
+            
+            res.render("students", newData);
+        };
+    });
 }
+    module.exports = {
+        GetStudents
+    };
